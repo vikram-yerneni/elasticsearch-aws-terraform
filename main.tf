@@ -174,8 +174,8 @@ resource "aws_elasticsearch_domain_policy" "elasticsearch_domain_policy" {
 }
 
 # Route53 Entry for the Elasticsearch Domain
-data "aws_route53_zone" "qomplx_private_dns_zone" {
-  name         = "qomplx-private."
+data "aws_route53_zone" "org_private_dns_zone" {
+  name         = "org-private."
   private_zone = true
   vpc_id       = var.vpc_id
 }
@@ -189,6 +189,6 @@ resource "aws_route53_record" "elastisearch_dns" {
 }
 
 locals {
-  dns_address = "elasticsearch.${data.aws_route53_zone.qomplx_private_dns_zone.name}"
-  dns_zone_id = data.aws_route53_zone.qomplx_private_dns_zone.zone_id
+  dns_address = "elasticsearch.${data.aws_route53_zone.org_private_dns_zone.name}"
+  dns_zone_id = data.aws_route53_zone.org_private_dns_zone.zone_id
 }
