@@ -1,0 +1,12 @@
+stages:
+  - test
+
+terraform-check:
+  stage: test # Set to any stage, preferably one *before* plan and apply.
+  trigger:
+    project: qomplx/engineering/triggers/terraform-check
+    strategy: depend
+  variables:
+    TARGET_PROJECT_PATH: $CI_PROJECT_PATH
+    TARGET_PROJECT_BRANCH: $CI_COMMIT_BRANCH
+
