@@ -65,7 +65,6 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
     }
   }
 
-  # In SSI Module, use {storage_type = io1} & {iops = 3000} for production
   ebs_options {
     ebs_enabled = true
     volume_size = var.ebs_volume_size
@@ -75,18 +74,14 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
 
   encrypt_at_rest {
     enabled = var.encrypt_at_rest_enabled
-    #    kms_key_id = var.encrypt_at_rest_kms_key_id
   }
 
   domain_endpoint_options {
     enforce_https           = var.domain_endpoint_options_enforce_https
     tls_security_policy     = var.domain_endpoint_options_tls_security_policy
     custom_endpoint_enabled = false
-    #    custom_endpoint                 = var.custom_endpoint_enabled ? var.custom_endpoint : null
-    #    custom_endpoint_certificate_arn = var.custom_endpoint_enabled ? var.custom_endpoint_certificate_arn : null
   }
 
-  # We need to set the var.production_mode for the 3 Availability Zones, 2 replicas, 5 primary shards & 5 data nodes - Need to dig in more here
   cluster_config {
     instance_count           = var.instance_count
     instance_type            = var.instance_type
@@ -110,7 +105,6 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
     enabled = var.node_to_node_encryption_enabled
   }
 
-  # We need to add existing subnet & security groups for setting up the VPC for elasticsearch
   dynamic "vpc_options" {
     for_each = var.vpc_enabled ? [true] : []
     content {
@@ -119,7 +113,6 @@ resource "aws_elasticsearch_domain" "elasticsearch_domain" {
     }
   }
 
-  # Need to enable only on production mode - Will setup
   snapshot_options {
     automated_snapshot_start_hour = var.automated_snapshot_start_hour
   }
